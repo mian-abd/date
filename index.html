@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Let's go on a date</title>
+    <link rel="stylesheet" href="css/valentine.css" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  </head>
+  <body>
+    <div id="valentineQuestion"><b>Cora, Will you go on a date with me?</b></div>
+    <button class="answerButton" onclick="handleYesClick()">
+      Yes
+    </button>
+    <button class="answerButton" id="noButton">I no no wanna o(╥﹏╥)o</button>
+    <br />
+    <img src="cat.gif" alt="cat asking question" class="responsive" />
+
+    <script>
+      // Initialize EmailJS
+      (function() {
+        emailjs.init("o22M_9WAvEDetlQvo");
+      })();
+
+      // Store form data globally
+      window.dateFormData = {
+        answer: '',
+        selectedDate: '',
+        selectedFood: [],
+        selectedDessert: [],
+        selectedActivities: []
+      };
+
+      function handleYesClick() {
+        window.dateFormData.answer = 'Yes';
+        localStorage.setItem('dateFormData', JSON.stringify(window.dateFormData));
+        location.href = 'thankyou.html';
+      }
+
+      document
+        .getElementById("noButton")
+        .addEventListener("click", function () {
+          var yesButton = document.querySelector(
+            'button[onclick*="handleYesClick"]'
+          );
+          var currentFontSize = parseInt(
+            window.getComputedStyle(yesButton).fontSize
+          );
+          yesButton.style.fontSize = currentFontSize + 10 + "px"; // Increase font size by 5px
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="css/flower.css" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <style>
+      .summary {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .summary h2 {
+        color: #333;
+        text-align: center;
+      }
+      .summary p {
+        margin: 10px 0;
+        color: #666;
+      }
+      .loading {
+        text-align: center;
+        color: #666;
+        margin: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="thankyou"><b>Thank you for being my girlfriend</b></div>
+    
+    <div class="summary" id="summary">
+      <h2>Your Date Plan Summary</h2>
+      <div id="summaryContent">
+        <p><strong>Answer:</strong> <span id="answer"></span></p>
+        <p><strong>Selected Date:</strong> <span id="selectedDate"></span></p>
+        <p><strong>Food Choices:</strong> <span id="selectedFood"></span></p>
+        <p><strong>Dessert Choices:</strong> <span id="selectedDessert"></span></p>
+        <p><strong>Activities:</strong> <span id="selectedActivities"></span></p>
+      </div>
+      <div class="loading" id="emailStatus">Sending email...</div>
+    </div>
+
+    <div class="flower">
+      <div class="f-wrapper">
+        <div class="flower__line"></div>
+        <div class="f">
+          <div class="flower__leaf flower__leaf--1"></div>
+          <div class="flower__leaf flower__leaf--2"></div>
+          <div class="flower__leaf flower__leaf--3"></div>
+          <div class="flower__leaf flower__leaf--4"></div>
+          <div class="flower__leaf flower__leaf--5"></div>
+          <div class="flower__leaf flower__leaf--6"></div>
+          <div class="flower__leaf flower__leaf--7"></div>
+          <div
+            class="flower__leaf flower__leaf--8 flower__fall-down--yellow"
+          ></div>
+        </div>
+      </div>
+
+      <div class="f-wrapper f-wrapper--2">
+        <div class="flower__line"></div>
+        <div class="f">
+          <div class="flower__leaf flower__leaf--1"></div>
+          <div class="flower__leaf flower__leaf--2"></div>
+          <div class="flower__leaf flower__leaf--3"></div>
+          <div class="flower__leaf flower__leaf--4"></div>
+          <div class="flower__leaf flower__leaf--5"></div>
+          <div class="flower__leaf flower__leaf--6"></div>
+          <div class="flower__leaf flower__leaf--7"></div>
+          <div
+            class="flower__leaf flower__leaf--8 flower__fall-down--pink"
+          ></div>
+        </div>
+      </div>
+
+      <div class="f-wrapper f-wrapper--3">
+        <div class="flower__line"></div>
+        <div class="f">
+          <div class="flower__leaf flower__leaf--1"></div>
+          <div class="flower__leaf flower__leaf--2"></div>
+          <div class="flower__leaf flower__leaf--3"></div>
+          <div class="flower__leaf flower__leaf--4"></div>
+          <div class="flower__leaf flower__leaf--5"></div>
+          <div class="flower__leaf flower__leaf--6"></div>
+          <div class="flower__leaf flower__leaf--7"></div>
+          <div
+            class="flower__leaf flower__leaf--8 flower__fall-down--purple"
+          ></div>
+        </div>
+      </div>
+      <div class="flower__glass"></div>
+    </div>
+
+    <script>
+      // Initialize EmailJS
+      (function() {
+        emailjs.init("o22M_9WAvEDetlQvo");
+      })();
+
+      // Load and display the collected data
+      let dateFormData = JSON.parse(localStorage.getItem('dateFormData')) || {
+        answer: '',
+        selectedDate: '',
+        selectedFood: [],
+        selectedDessert: [],
+        selectedActivities: []
+      };
+
+      // Display the summary
+      document.getElementById('answer').textContent = dateFormData.answer || 'Not selected';
+      document.getElementById('selectedDate').textContent = dateFormData.selectedDate || 'Not selected';
+      document.getElementById('selectedFood').textContent = dateFormData.selectedFood.length > 0 ? dateFormData.selectedFood.join(', ') : 'None selected';
+      document.getElementById('selectedDessert').textContent = dateFormData.selectedDessert.length > 0 ? dateFormData.selectedDessert.join(', ') : 'None selected';
+      document.getElementById('selectedActivities').textContent = dateFormData.selectedActivities.length > 0 ? dateFormData.selectedActivities.join(', ') : 'None selected';
+
+      // Send email with the collected data
+      function sendEmail() {
+        const templateParams = {
+          to_email: 'maabhai549@gmail.com',
+          answer: dateFormData.answer || 'Not selected',
+          selected_date: dateFormData.selectedDate || 'Not selected',
+          selected_food: dateFormData.selectedFood.length > 0 ? dateFormData.selectedFood.join(', ') : 'None selected',
+          selected_dessert: dateFormData.selectedDessert.length > 0 ? dateFormData.selectedDessert.join(', ') : 'None selected',
+          selected_activities: dateFormData.selectedActivities.length > 0 ? dateFormData.selectedActivities.join(', ') : 'None selected',
+          timestamp: new Date().toLocaleString()
+        };
+
+        emailjs.send('service_i7f3mob', 'template_nasl5ju', templateParams)
+          .then(function(response) {
+            console.log('SUCCESS!', response.status, response.text);
+            document.getElementById('emailStatus').innerHTML = '✅ Email sent successfully!';
+            document.getElementById('emailStatus').style.color = 'green';
+          }, function(error) {
+            console.log('FAILED...', error);
+            document.getElementById('emailStatus').innerHTML = '❌ Failed to send email. Please try again.';
+            document.getElementById('emailStatus').style.color = 'red';
+          });
+      }
+
+      // Send email when page loads
+      window.onload = function() {
+        setTimeout(sendEmail, 1000); // Send email after 1 second
+      };
+    </script>
+  </body>
+</html>
